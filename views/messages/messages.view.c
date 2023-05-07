@@ -1,6 +1,5 @@
 #include "messages.view.h"
 
-void get_message(char *msg, bool error) {
-    //Verificacao se a mensagem é um erro
-    error ? perror(msg) : printf("\n%s", msg);
+void get_message(char *_msg, bool _error) {
+    _error ? perror(_msg) : printf("\n%s", _msg);
 }
