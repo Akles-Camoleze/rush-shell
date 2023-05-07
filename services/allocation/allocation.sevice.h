@@ -8,6 +8,6 @@
 #include <linux/limits.h>
 
 char *malloc_command_line();
-char *realloc_command_line(char **_command);
+char *realloc_command_line(char *_command);
 
 #endif //RUSH_SHELL_ALLOCATION_SEVICE_H
