@@ -21,5 +21,6 @@ char *malloc_command_line();
  * Nova posicao de string realocada
  * */
 char *realloc_command_line(char *_command);
+void clean(void **_ptr);
 
 #endif //RUSH_SHELL_ALLOCATION_SEVICE_H
