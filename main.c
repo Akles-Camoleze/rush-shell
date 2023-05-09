@@ -1,11 +1,19 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <wait.h>
 #include "services/commandline/commandline.service.h"
 #include "views/messages/messages.view.h"
+#define WRITE 1
+#define READ 0
 
 int main() {
     char *command = NULL;
+    int *pipeA = NULL;
+    pipe(pipeA);
+    pid_t pid;
+    char *test[] = {"ll", NULL};
+
     while (1) {
         free(command);
         command = NULL;
@@ -13,7 +21,15 @@ int main() {
         get_command_line(&command);
         bool checked = check_command(command);
         if (checked) {
-            get_message(strcat(command, "\n"), false);
+            char **command_split = split_command(command, " ");
+            check_exit(command_split[0]);
+            pid = fork();
+            if (pid == 0) {
+                execvp(command_split[0], command_split);
+                get_message(command_split[0], true);
+            } else {
+                wait(NULL);
+            }
         }
     }
 
