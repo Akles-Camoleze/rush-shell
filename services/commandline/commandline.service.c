@@ -15,20 +15,28 @@ bool check_command(char *_command) {
     return true;
 }
 
+int get_args_quantity(char *_command, char *_token) {
+    int n_args = 0;
+    char *arg = strtok(strdup(_command), _token);
+    while (arg != NULL) {
+        n_args++;
+        arg = strtok(NULL, _token);
+    }
+    clean((void **)&arg);
+    return n_args;
+}
+
 char **split_command(char *_command, char *_token) {
     int i = 0;
-    char **args = NULL;
-    char *command_cpy = (char *) malloc((strlen(_command) + 1) * sizeof(char));
-    strcpy(command_cpy,_command);
-    command_cpy = strtok(command_cpy, _token);
-    while (command_cpy != NULL) {
-        args = (char **) realloc(args, (i + 1) * sizeof(char *) + 1);
-        args[i] =  (char *) malloc((strlen(command_cpy) + 1) * sizeof(char));
-        strcpy(args[i], command_cpy);
-        command_cpy = strtok(NULL, _token);
+    int n_args = get_args_quantity(_command, _token);
+    char *arg = strtok(strdup(_command), _token);
+    char **args = (char **) malloc((n_args + 1) * sizeof(char *));
+    while (arg != NULL) {
+        args[i] = strdup(arg);
+        arg = strtok(NULL, _token);
         i++;
     }
-    clean((void **) &command_cpy);
+    clean((void **) &arg);
     return args;
 }
 
