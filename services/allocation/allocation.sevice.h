@@ -1,5 +1,4 @@
 #ifndef RUSH_SHELL_ALLOCATION_SEVICE_H
-
 #define RUSH_SHELL_ALLOCATION_SEVICE_H
 
 #include <stdio.h>
@@ -21,6 +20,11 @@ char *malloc_command_line();
  * Nova posicao de string realocada
  * */
 char *realloc_command_line(char *_command);
+
+/**
+ * Libera o ponteiro da memória e aponta-o para NULL
+ * @param _ptr: Ponteiro a ser manipulado
+ * */
 void clean(void **_ptr);
 
 #endif //RUSH_SHELL_ALLOCATION_SEVICE_H
