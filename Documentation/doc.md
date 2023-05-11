@@ -22,7 +22,7 @@ conclusão do comando anterior.
 #### Execução de Comandos
 * Cada linha digitada poderá conter um ou
 mais comandos a serem executados.
-* Se houver mais de comando na linha eles
+* Se houver mais de comando na linha
 eles deverão ser encadeados por pipes ("|"),
 permitindo que a saída de um coamando seja a 
 entrada para outro comando.
@@ -38,7 +38,7 @@ de entrada e saída para arquivos, permitindo
 que o usuário especifique o arquivo de entrada
 ou saída para um comando.
 * **Encadeamento de Comandos:** É possível encadear múltiplos comandos através
-do uso do operador pipr ('|'), permitindo que
+do uso do operador pipe ('|'), permitindo que
 a saída seja redirecionada como entrada de 
 outro comando.
 ### Requisitos do Sistema

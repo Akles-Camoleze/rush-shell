@@ -20,7 +20,7 @@ bool check_command(char *_command);
 
 /**
  *  Executa a função "exit(0)" para "fechar" o processo pai.
- * @param args : argumento (_args)  esperando ser exit
+ * @param _command : argumento (_args)  esperando ser exit
  * @return void :sem retorno
  */
 void check_exit(char *_command);
@@ -40,5 +40,13 @@ int get_args_quantity(char *_command, char *_token);
  * @return Matriz de argumentos, presente em _command
  */
 char **split_command(char *_command, char *_token);
+
+/**
+ *  Obtem o caminho (path) do _commando
+ * @param _command :Comando a ser obtido o caminho
+ * @return caminho de _command
+ */
+char *get_command_path(char *_command);
+
 
 #endif //RUSH_SHELL_COMMANDLINE_SERVICE_H

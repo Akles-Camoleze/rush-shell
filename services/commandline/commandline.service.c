@@ -4,10 +4,11 @@ void get_command_line(char **_buffer) {
     *_buffer = malloc_command_line();
     fgets(*_buffer, ARG_MAX, stdin);
     (*_buffer)[strcspn(*_buffer, "\n")] = 0;
-    *_buffer = realloc_command_line(*_buffer);
+    *_buffer = realloc_command_line(*_buffer, strlen(*_buffer));
 }
 
 bool check_command(char *_command) {
+    if (_command == NULL) return false;
     int i = 0;
     while (_command[i] == ' ') i++;
     if (i == strlen(_command)) return false;
@@ -44,4 +45,27 @@ void check_exit(char *_first_arg) {
     if (strcmp(_first_arg, "exit") == 0){
         exit(0);
     }
+}
+
+char *get_command_path(char *_command) {
+    char *which = {"which"};
+    char *cmd = (char *) malloc((strlen(which) + strlen(_command) + 2) * sizeof(char));
+    sprintf(cmd, "%s %s", which, _command);
+
+    FILE *fp = popen(cmd, "r");
+    if (fp == NULL) return NULL;
+
+    which = NULL;
+    clean((void **) &cmd);
+    char *path = (char *) malloc(PATH_MAX * sizeof(char));
+
+    if (fgets(path, PATH_MAX, fp) == NULL) {
+        clean((void **)&path);
+    } else {
+        path[strcspn(path, "\n")] = 0;
+    }
+
+    pclose(fp);
+
+    return path;
 }

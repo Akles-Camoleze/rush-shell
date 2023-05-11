@@ -4,6 +4,7 @@
 #include <wait.h>
 #include "services/commandline/commandline.service.h"
 #include "views/messages/messages.view.h"
+
 #define WRITE 1
 #define READ 0
 
@@ -12,7 +13,7 @@ int main() {
     int *pipeA = NULL;
     pipe(pipeA);
     pid_t pid;
-    char *test[] = {"ll", NULL};
+    char *command_path;
 
     while (1) {
         free(command);
@@ -23,11 +24,19 @@ int main() {
         if (checked) {
             char **command_split = split_command(command, " ");
             check_exit(*command_split);
+
+            command_path = get_command_path(*command_split);
+            if (check_command(command_path)) {
+                *command_split = realloc_command_line(*command_split, strlen(command_path));
+                strcpy(*command_split, command_path);
+                clean((void **) &command_path);
+            }
+
             pid = fork();
             if (pid == 0) {
                 execvp(*command_split, command_split);
-               get_message(*command_split, true);
-                exit(1);
+                get_message(*command_split, true);
+                exit(EXIT_FAILURE);
             } else {
                 wait(NULL);
             }
