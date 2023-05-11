@@ -22,11 +22,12 @@ int main() {
         bool checked = check_command(command);
         if (checked) {
             char **command_split = split_command(command, " ");
-            check_exit(command_split[0]);
+            check_exit(*command_split);
             pid = fork();
             if (pid == 0) {
-                execvp(command_split[0], command_split);
-                get_message(command_split[0], true);
+                execvp(*command_split, command_split);
+               get_message(*command_split, true);
+                exit(1);
             } else {
                 wait(NULL);
             }
