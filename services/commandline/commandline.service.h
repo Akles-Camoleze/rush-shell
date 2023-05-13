@@ -39,7 +39,7 @@ int get_args_quantity(char *_command, char *_token);
  * @param _token: Delimitador no qual o _command deve ser explodido
  * @return Matriz de argumentos, presente em _command
  */
-char **split_command(char *_command, char *_token);
+char **split_command(char *_command, char *_token, int *_n_args);
 
 /**
  *  Obtem o caminho (path) do _commando
