@@ -34,7 +34,6 @@ int main() {
                     strcpy(command_split[i], command_path);
                     clean((void **) &command_path);
                 }
-                printf("\n%s", command_split[i]);
                 if (i >= 3) {
                     waitpid(p_ids[i - 3], NULL, 0);
                 }
@@ -57,7 +56,6 @@ int main() {
                     get_message(command_split[i], true);
                     exit(EXIT_FAILURE);
                 }
-                waitpid(p_ids[(i + 1) % 2], NULL, 0);
             }
             close(pipes[B][W]);
             close(pipes[B][R]);
