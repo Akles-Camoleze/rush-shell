@@ -1,72 +1,60 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include <wait.h>
+#include <sys/wait.h>
 #include "services/commandline/commandline.service.h"
 #include "views/messages/messages.view.h"
+#include "services/file/file.service.h"
+#include "services/engine/engine.service.h"
 
-#define W 1
-#define R 0
-#define A 0
-#define B 1
-#define C 2
-
-void close_pipes(int pipes[][2], int n_pipe) {
-    for (int i = 0; i < n_pipe; ++i) {
-        close(pipes[i][W]);
-        close(pipes[i][R]);
-    }
-}
 
 int main() {
+    int n_args;
     char *command = NULL;
 
     while (1) {
         clean((void **) &command);
         get_message("$ ", false);
         get_command_line(&command);
-        bool checked = check_command(command);
-        if (checked) {
-            int n_args;
-            char **command_split = split_command(command, "|", &n_args);
-            check_exit(*command_split);
-            int pipes[3][2];
-            pipe(pipes[A]);
-            pipe(pipes[B]);
-            pipe(pipes[C]);
+        if (check_command(command)) {
+            char **commands = split_command(command, "|", &n_args);
+            check_exit(*commands);
+
+            int n_pipes = n_args - 1;
+            int pipes[n_pipes][2];
             pid_t p_ids[n_args];
+            open_pipes(pipes, n_pipes);
 
             for (int i = 0; i < n_args; i++) {
-                char *command_path = get_command_path(command_split[i]);
-                if (check_command(command_path)) {
-                    command_split[i] = realloc_command_line(command_split[i], strlen(command_path));
-                    strcpy(command_split[i], command_path);
-                    clean((void **) &command_path);
-                }
-                if (i >= 3) {
-                    waitpid(p_ids[i - 3], NULL, 0);
-                }
+                replace_command(commands[i], get_command_path(commands[i]));
+
                 p_ids[i] = fork();
                 if (p_ids[i] == 0) {
-                    if (i == 0) {
-                        dup2(pipes[i][W], STDOUT_FILENO);
-                    } else {
-                        dup2(pipes[(i - 1) % 3][R], STDIN_FILENO);
-                        if (command_split[i + 1] != NULL) {
-                            dup2(pipes[i % 3][W], STDOUT_FILENO);
-                        }
+                    int *pipe = NULL;
+                    if (i != 0) {
+                        pipe = pipes[i - 1];
                     }
-                    char *teste[] = {command_split[i], NULL};
-                    close_pipes(pipes, 3);
-                    execvp(command_split[i], teste);
-                    get_message(command_split[i], true);
+                    pipe_setup(pipes[i], pipe, commands[i + 1]);
+
+                    int n_redirects;
+                    char **redirects = split_command(commands[i], "<", &n_redirects);
+                    if (n_redirects > 1) {
+                        FILE *fp = file_handler(redirects[1], "r");
+                        dup2(fileno(fp), STDIN_FILENO);
+                    }
+
+                    close_pipes(pipes, n_pipes);
+                    char *teste[] = {*redirects, NULL};
+                    execvp(*teste, teste);
+                    get_message(*teste, true);
                     exit(EXIT_FAILURE);
                 }
             }
-            close_pipes(pipes, 3);
+            close_pipes(pipes, n_pipes);
             waitpid(p_ids[n_args - 1], NULL, 0);
+
             for (int i = 0; i < n_args; ++i) {
-                clean((void**) &command_split[i]);
+                clean((void **) &commands[i]);
             }
         }
     }

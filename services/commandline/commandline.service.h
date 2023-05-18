@@ -48,5 +48,7 @@ char **split_command(char *_command, char *_token, int *_n_args);
  */
 char *get_command_path(char *_command);
 
+void replace_command(char *_dest, char *_src);
+
 
 #endif //RUSH_SHELL_COMMANDLINE_SERVICE_H

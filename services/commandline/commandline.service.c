@@ -69,3 +69,11 @@ char *get_command_path(char *_command) {
 
     return path;
 }
+
+void replace_command(char *_dest, char *_src) {
+    if (check_command(_src)) {
+        _dest = realloc_command_line(_dest, strlen(_src));
+        strcpy(_dest, _src);
+        clean((void **) &_src);
+    }
+}
