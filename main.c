@@ -9,6 +9,14 @@
 #define R 0
 #define A 0
 #define B 1
+#define C 2
+
+void close_pipes(int pipes[][2], int n_pipe) {
+    for (int i = 0; i < n_pipe; ++i) {
+        close(pipes[i][W]);
+        close(pipes[i][R]);
+    }
+}
 
 int main() {
     char *command = NULL;
@@ -20,11 +28,12 @@ int main() {
         bool checked = check_command(command);
         if (checked) {
             int n_args;
-            char **command_split = split_command(command, "|", &n_args); // matriz do split em pipe
+            char **command_split = split_command(command, "|", &n_args);
             check_exit(*command_split);
-            int pipes[2][2];
+            int pipes[3][2];
             pipe(pipes[A]);
             pipe(pipes[B]);
+            pipe(pipes[C]);
             pid_t p_ids[n_args];
 
             for (int i = 0; i < n_args; i++) {
@@ -40,27 +49,21 @@ int main() {
                 p_ids[i] = fork();
                 if (p_ids[i] == 0) {
                     if (i == 0) {
-                        dup2(pipes[A][W], STDOUT_FILENO);
+                        dup2(pipes[i][W], STDOUT_FILENO);
                     } else {
-                        dup2(pipes[(i - 1) % 2][R], STDIN_FILENO);
+                        dup2(pipes[(i - 1) % 3][R], STDIN_FILENO);
                         if (command_split[i + 1] != NULL) {
-                            dup2(pipes[i % 2][W], STDOUT_FILENO);
+                            dup2(pipes[i % 3][W], STDOUT_FILENO);
                         }
                     }
                     char *teste[] = {command_split[i], NULL};
-                    close(pipes[A][R]);
-                    close(pipes[A][W]);
-                    close(pipes[B][R]);
-                    close(pipes[B][W]);
+                    close_pipes(pipes, 3);
                     execvp(command_split[i], teste);
                     get_message(command_split[i], true);
                     exit(EXIT_FAILURE);
                 }
             }
-            close(pipes[B][W]);
-            close(pipes[B][R]);
-            close(pipes[A][R]);
-            close(pipes[A][W]);
+            close_pipes(pipes, 3);
             waitpid(p_ids[n_args - 1], NULL, 0);
             for (int i = 0; i < n_args; ++i) {
                 clean((void**) &command_split[i]);
