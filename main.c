@@ -20,14 +20,13 @@ int main() {
             char **commands = split_command(command, "|", &n_args);
             check_exit(*commands);
 
+
             int n_pipes = n_args - 1;
             int pipes[n_pipes][2];
             pid_t p_ids[n_args];
             open_pipes(pipes, n_pipes);
 
             for (int i = 0; i < n_args; i++) {
-                replace_command(commands[i], get_command_path(commands[i]));
-
                 p_ids[i] = fork();
                 if (p_ids[i] == 0) {
                     int *pipe = NULL;
@@ -36,11 +35,26 @@ int main() {
                     }
                     pipe_setup(pipes[i], pipe, commands[i + 1]);
 
-                    int n_redirects;
-                    char **redirects = split_command(commands[i], "<", &n_redirects);
-                    if (n_redirects > 1) {
-                        FILE *fp = file_handler(redirects[1], "r");
+                    int n_redir_out;
+                    char **redirects = split_command(commands[i], "<", &n_redir_out);
+                    replace_command(*redirects, get_command_path(*redirects));
+                    for (int j = 1; j < n_redir_out; j++) {
+                        FILE *fp = file_handler(redirects[j], "r");
                         dup2(fileno(fp), STDIN_FILENO);
+                        close(fileno(fp));
+                    }
+
+                    for (int j = 0; j < n_args; i++) {
+                        clean((void **) &redirects[j]);
+                    }
+
+                    int n_redir_in;
+                    redirects = split_command(commands[i], ">", &n_redir_in);
+                    replace_command(*redirects, get_command_path(*redirects));
+                    for (int j = 1; j < n_redir_in; j++) {
+                        FILE *fp = file_handler(redirects[j], "w");
+                        dup2(fileno(fp), STDOUT_FILENO);
+                        close(fileno(fp));
                     }
 
                     close_pipes(pipes, n_pipes);
