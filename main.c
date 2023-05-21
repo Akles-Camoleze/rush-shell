@@ -14,7 +14,7 @@ int main() {
 
     while (true) {
         clean((void **) &command);
-        get_message("$ ", false);
+        get_message("\033[35;1mrush@shell\033[37;1m:\033[32m~\033[37m$ ", false);
         get_command_line(&command);
         if (check_command(command)) {
             char **commands = split_command(command, "|", &n_cmd);
@@ -38,7 +38,6 @@ int main() {
                     int n_redir_args;
                     char *redir_order = get_redirects_order(commands[i]);
                     char **redirects = split_command(commands[i], "<>", &n_redir_args);
-
                     int n_spaces;
                     char **spaces = split_command(*redirects, " ", &n_spaces);
 
