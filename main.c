@@ -28,11 +28,12 @@ int main() {
             for (int i = 0; i < n_args; i++) {
                 p_ids[i] = fork();
                 if (p_ids[i] == 0) {
-                    int *pipe = NULL;
+                    int *prev_pipe = NULL;
                     if (i != 0) {
-                        pipe = pipes[i - 1];
+                        prev_pipe = pipes[i - 1];
                     }
-                    pipe_setup(pipes[i], pipe, commands[i + 1]);
+                    pipe_setup(pipes[i], prev_pipe, commands[i + 1]);
+                    close_pipes(pipes, n_pipes);
 
                     int n_redirects;
                     char *redir_order = get_redirects_order(commands[i]);
@@ -50,7 +51,6 @@ int main() {
                         close(fileno(fp));
                     }
 
-                    close_pipes(pipes, n_pipes);
                     char *teste[] = {*redirects, NULL};
                     execvp(*teste, teste);
                     get_message(*teste, true);

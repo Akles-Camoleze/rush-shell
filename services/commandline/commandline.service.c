@@ -85,11 +85,9 @@ char *get_redirects_order(const char *_command) {
         if(*_command == '<' || *_command == '>') {
             redir_order = realloc(redir_order, (i + 2) * sizeof(char));
             redir_order[i] = *_command;
-            i++;
+            redir_order[++i] = '\0';
         }
         _command++;
     }
-    redir_order[i] = '\0';
-
     return redir_order;
 }
