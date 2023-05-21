@@ -12,14 +12,13 @@ int main() {
     int n_args;
     char *command = NULL;
 
-    while (1) {
+    while (true) {
         clean((void **) &command);
         get_message("$ ", false);
         get_command_line(&command);
         if (check_command(command)) {
             char **commands = split_command(command, "|", &n_args);
             check_exit(*commands);
-
 
             int n_pipes = n_args - 1;
             int pipes[n_pipes][2];
@@ -35,25 +34,19 @@ int main() {
                     }
                     pipe_setup(pipes[i], pipe, commands[i + 1]);
 
-                    int n_redir_out;
-                    char **redirects = split_command(commands[i], "<", &n_redir_out);
+                    int n_redirects;
+                    char *redir_order = get_redirects_order(commands[i]);
+                    char **redirects = split_command(commands[i], "<>", &n_redirects);
                     replace_command(*redirects, get_command_path(*redirects));
-                    for (int j = 1; j < n_redir_out; j++) {
-                        FILE *fp = file_handler(redirects[j], "r");
-                        dup2(fileno(fp), STDIN_FILENO);
-                        close(fileno(fp));
-                    }
-
-                    for (int j = 0; j < n_args; i++) {
-                        clean((void **) &redirects[j]);
-                    }
-
-                    int n_redir_in;
-                    redirects = split_command(commands[i], ">", &n_redir_in);
-                    replace_command(*redirects, get_command_path(*redirects));
-                    for (int j = 1; j < n_redir_in; j++) {
-                        FILE *fp = file_handler(redirects[j], "w");
-                        dup2(fileno(fp), STDOUT_FILENO);
+                    for (int j = 1; j < n_redirects; j++) {
+                        FILE *fp;
+                        if(redir_order[j - 1] == '<') {
+                            fp = file_handler(redirects[j], "r");
+                            dup2(fileno(fp), STDIN_FILENO);
+                        } else {
+                            fp = file_handler(redirects[j], "w");
+                            dup2(fileno(fp), STDOUT_FILENO);
+                        }
                         close(fileno(fp));
                     }
 

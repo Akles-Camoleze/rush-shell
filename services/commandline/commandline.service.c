@@ -77,3 +77,19 @@ void replace_command(char *_dest, char *_src) {
         clean((void **) &_src);
     }
 }
+
+char *get_redirects_order(const char *_command) {
+    int i = 0;
+    char *redir_order = NULL;
+    while (*_command != 0) {
+        if(*_command == '<' || *_command == '>') {
+            redir_order = realloc(redir_order, (i + 2) * sizeof(char));
+            redir_order[i] = *_command;
+            i++;
+        }
+        _command++;
+    }
+    redir_order[i] = '\0';
+
+    return redir_order;
+}

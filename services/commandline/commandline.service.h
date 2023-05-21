@@ -50,5 +50,7 @@ char *get_command_path(char *_command);
 
 void replace_command(char *_dest, char *_src);
 
+char *get_redirects_order(const char *_command);
+
 
 #endif //RUSH_SHELL_COMMANDLINE_SERVICE_H
