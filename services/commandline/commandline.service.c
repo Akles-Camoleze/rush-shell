@@ -42,7 +42,8 @@ char **split_command(char *_command, char *_token, int *_n_args) {
 }
 
 void check_exit(char *_first_arg) {
-    if (strcmp(_first_arg, "exit") == 0){
+    char *trim_arg = strdup(_first_arg);
+    if (strncmp(trim(trim_arg), "exit", 4) == 0){
         exit(0);
     }
 }
@@ -90,4 +91,16 @@ char *get_redirects_order(const char *_command) {
         _command++;
     }
     return redir_order;
+}
+
+char *trim(char *_str) {
+    int length = (int) strlen(_str);
+    int i, j;
+    for (i = j = 0; i < length; i++) {
+        if (!isspace((unsigned char) _str[i])) {
+            _str[j++] = _str[i];
+        }
+    }
+    _str[j] = '\0';
+    return _str;
 }

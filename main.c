@@ -9,7 +9,7 @@
 
 
 int main() {
-    int n_args;
+    int n_cmd;
     char *command = NULL;
 
     while (true) {
@@ -17,15 +17,15 @@ int main() {
         get_message("$ ", false);
         get_command_line(&command);
         if (check_command(command)) {
-            char **commands = split_command(command, "|", &n_args);
+            char **commands = split_command(command, "|", &n_cmd);
             check_exit(*commands);
 
-            int n_pipes = n_args - 1;
+            int n_pipes = n_cmd - 1;
             int pipes[n_pipes][2];
-            pid_t p_ids[n_args];
+            pid_t p_ids[n_cmd];
             open_pipes(pipes, n_pipes);
 
-            for (int i = 0; i < n_args; i++) {
+            for (int i = 0; i < n_cmd; i++) {
                 p_ids[i] = fork();
                 if (p_ids[i] == 0) {
                     int *prev_pipe = NULL;
@@ -35,32 +35,25 @@ int main() {
                     pipe_setup(pipes[i], prev_pipe, commands[i + 1]);
                     close_pipes(pipes, n_pipes);
 
-                    int n_redirects;
+                    int n_redir_args;
                     char *redir_order = get_redirects_order(commands[i]);
-                    char **redirects = split_command(commands[i], "<>", &n_redirects);
-                    replace_command(*redirects, get_command_path(*redirects));
-                    for (int j = 1; j < n_redirects; j++) {
-                        FILE *fp;
-                        if(redir_order[j - 1] == '<') {
-                            fp = file_handler(redirects[j], "r");
-                            dup2(fileno(fp), STDIN_FILENO);
-                        } else {
-                            fp = file_handler(redirects[j], "w");
-                            dup2(fileno(fp), STDOUT_FILENO);
-                        }
-                        close(fileno(fp));
-                    }
+                    char **redirects = split_command(commands[i], "<>", &n_redir_args);
 
-                    char *teste[] = {*redirects, NULL};
-                    execvp(*teste, teste);
-                    get_message(*teste, true);
+                    int n_spaces;
+                    char **spaces = split_command(*redirects, " ", &n_spaces);
+
+                    replace_command(*spaces, get_command_path(*spaces));
+                    redirect_setup(redirects, redir_order, n_redir_args);
+
+                    execvp(*spaces, spaces);
+                    get_message(*spaces, true);
                     exit(EXIT_FAILURE);
                 }
             }
             close_pipes(pipes, n_pipes);
-            waitpid(p_ids[n_args - 1], NULL, 0);
+            waitpid(p_ids[n_cmd - 1], NULL, 0);
 
-            for (int i = 0; i < n_args; ++i) {
+            for (int i = 0; i < n_cmd; ++i) {
                 clean((void **) &commands[i]);
             }
         }

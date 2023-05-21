@@ -4,6 +4,7 @@
 #include "../allocation/allocation.sevice.h"
 #include "../../views/messages/messages.view.h"
 #include <stdbool.h>
+#include <ctype.h>
 
 /**
  * Recebe o comando no endereço apontado por _buffer
@@ -52,5 +53,6 @@ void replace_command(char *_dest, char *_src);
 
 char *get_redirects_order(const char *_command);
 
+char *trim(char *_str);
 
 #endif //RUSH_SHELL_COMMANDLINE_SERVICE_H
