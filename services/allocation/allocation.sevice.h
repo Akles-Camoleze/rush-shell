@@ -28,6 +28,4 @@ char *realloc_command_line(char *_command, size_t _size);
  * */
 void clean(void **_ptr);
 
-void clean_set(void **_ptr, int _n);
-
 #endif //RUSH_SHELL_ALLOCATION_SEVICE_H

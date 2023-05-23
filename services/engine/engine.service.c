@@ -28,7 +28,7 @@ void pipe_setup(int *_curr_pipe, int *_prev_pipe, const char *_next_cmd) {
 
 void redirect_setup(char **_redirects, const char *_redir_order, int _n_redir_args) {
     for (int j = 1; j < _n_redir_args; j++) {
-        FILE *fp;
+        FILE *fp = NULL;
         trim(_redirects[j]);
         if(_redir_order[j - 1] == '<') {
             fp = file_handler(_redirects[j], "r");

@@ -8,6 +8,10 @@
 #include <unistd.h>
 #include <limits.h>
 
+/**
+ * Recupera o nome de usuario e host concatenados
+ * @return username concatenado com '@' e hostname
+ */
 char *get_credentials();
 
 /**
@@ -53,10 +57,25 @@ char **split_command(char *_command, char *_token, int *_n_args);
  */
 char *get_command_path(char *_command);
 
+/**
+ *  Substitui _dest por _src, realizando alocação necessária
+ * @param _dest : char* à ser substituida
+ * @param _src: char * à ser copiada para _dest
+ */
 void replace_command(char *_dest, char *_src);
 
+/**
+ *  Cria um char* de acordo com a ordem de redirecionadores contidos em _command
+ * @param _command :Comando a ser obtido a ordem dos redirecionadores
+ * @return char* com os redirecionadores contidos em _command em ordem
+ */
 char *get_redirects_order(const char *_command);
 
+/**
+ *  Remove os espaços contidos em _str
+ * @param _str :Comando a ser removido os espaços
+ * @return char* do _commando sem caracteres de espaço
+ */
 char *trim(char *_str);
 
 #endif //RUSH_SHELL_COMMANDLINE_SERVICE_H
