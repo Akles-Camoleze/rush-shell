@@ -14,7 +14,7 @@ int main() {
 
     while (true) {
         clean((void **) &command);
-        get_message("\033[35;1mrush@shell\033[37;1m:\033[32m~\033[37m$ ", false);
+        printf("\033[35;1m%s\033[37;1m:\033[32m~\033[37m$ ", get_credentials());
         get_command_line(&command);
         if (check_command(command)) {
             char **commands = split_command(command, "|", &n_cmd);

@@ -1,5 +1,26 @@
 #include "commandline.service.h"
 
+
+char *get_credentials() {
+    char hostname[HOST_NAME_MAX + 1];
+    if (gethostname(hostname, sizeof(hostname)) == -1) {
+        return NULL;
+    }
+
+    char *username = getenv("USER");
+    if (username == NULL) {
+        return NULL;
+    }
+
+    char *credentials = (char *) malloc((strlen(username) + strlen(hostname) + 2) * sizeof(char));
+    if (credentials == NULL) {
+        return NULL;
+    }
+
+    snprintf(credentials, strlen(username) + strlen(hostname) + 2, "%s@%s", username, hostname);
+    return credentials;
+}
+
 void get_command_line(char **_buffer) {
     *_buffer = malloc_command_line();
     fgets(*_buffer, ARG_MAX, stdin);
@@ -22,7 +43,7 @@ int get_args_quantity(char *_command, char *_token) {
         n_args++;
         arg = strtok(NULL, _token);
     }
-    clean((void **)&arg);
+    clean((void **) &arg);
     return n_args;
 }
 
@@ -43,7 +64,7 @@ char **split_command(char *_command, char *_token, int *_n_args) {
 
 void check_exit(char *_first_arg) {
     char *trim_arg = strdup(_first_arg);
-    if (strncmp(trim(trim_arg), "exit", 4) == 0){
+    if (strncmp(trim(trim_arg), "exit", 4) == 0) {
         exit(0);
     }
 }
@@ -61,7 +82,7 @@ char *get_command_path(char *_command) {
     char *path = (char *) malloc(PATH_MAX * sizeof(char));
 
     if (fgets(path, PATH_MAX, fp) == NULL) {
-        clean((void **)&path);
+        clean((void **) &path);
     } else {
         path[strcspn(path, "\n")] = 0;
     }
@@ -83,7 +104,7 @@ char *get_redirects_order(const char *_command) {
     int i = 0;
     char *redir_order = NULL;
     while (*_command != 0) {
-        if(*_command == '<' || *_command == '>') {
+        if (*_command == '<' || *_command == '>') {
             redir_order = realloc(redir_order, (i + 2) * sizeof(char));
             redir_order[i] = *_command;
             redir_order[++i] = '\0';

@@ -5,6 +5,10 @@
 #include "../../views/messages/messages.view.h"
 #include <stdbool.h>
 #include <ctype.h>
+#include <unistd.h>
+#include <limits.h>
+
+char *get_credentials();
 
 /**
  * Recebe o comando no endereço apontado por _buffer
