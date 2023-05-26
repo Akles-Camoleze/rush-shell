@@ -17,14 +17,13 @@ int main() {
         printf("\033[35;1m%s\033[37;1m:\033[32m~\033[37m$ ", get_credentials());
         get_command_line(&command);
         if (check_command(command)) {
-            char **commands = split_command(command, "|", &n_cmd);
+            char **commands = split_command(command, PIPE_TOK, &n_cmd);
             check_exit(*commands);
 
             int n_pipes = n_cmd - 1;
             int pipes[n_pipes][2];
             pid_t p_ids[n_cmd];
             open_pipes(pipes, n_pipes);
-
 
             for (int i = 0; i < n_cmd; i++) {
                 p_ids[i] = fork();
@@ -38,9 +37,9 @@ int main() {
 
                     int n_redir_args;
                     char **redir_order = get_redirects_order(commands[i]);
-                    char **redirects = split_command(commands[i], "<>>", &n_redir_args);
+                    char **redirects = split_command(commands[i], DUP_TOK, &n_redir_args);
                     int n_spaces;
-                    char **spaces = split_command(*redirects, " ", &n_spaces);
+                    char **spaces = split_command(*redirects, SPACE_TOK, &n_spaces);
 
                     replace_command(*spaces, get_command_path(*spaces));
                     redirect_setup(redirects, redir_order, n_redir_args);

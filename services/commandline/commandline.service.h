@@ -7,6 +7,9 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <limits.h>
+#define PIPE_TOK "|"
+#define DUP_TOK "<>>"
+#define SPACE_TOK " "
 
 /**
  * Recupera o nome de usuario e host concatenados
