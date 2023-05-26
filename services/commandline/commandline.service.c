@@ -100,17 +100,27 @@ void replace_command(char *_dest, char *_src) {
     }
 }
 
-char *get_redirects_order(const char *_command) {
-    int i = 0;
-    char *redir_order = NULL;
+char **get_redirects_order(const char *_command) {
+    int i = 0, add = 1;
+    char **redir_order = {NULL};
     while (*_command != 0) {
         if (*_command == '<' || *_command == '>') {
-            redir_order = realloc(redir_order, (i + 2) * sizeof(char));
-            redir_order[i] = *_command;
-            redir_order[++i] = '\0';
+            redir_order = (char **) realloc(redir_order, (i + 2) * sizeof(char *));
+            if (*(_command + 1) == *_command && *_command == '>') {
+                add = 2;
+            }
+            redir_order[i] = (char *) malloc((add + 1) * sizeof(char));
+            redir_order[i][0] = *_command;
+            if(add == 2) {
+                redir_order[i][1] = *(_command + 1);
+            }
+            redir_order[i][add] = 0;
+            redir_order[++i] = NULL;
         }
-        _command++;
+        _command += add;
+        add = 1;
     }
+
     return redir_order;
 }
 

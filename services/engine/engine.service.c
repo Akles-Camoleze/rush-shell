@@ -26,15 +26,19 @@ void pipe_setup(int *_curr_pipe, int *_prev_pipe, const char *_next_cmd) {
     }
 }
 
-void redirect_setup(char **_redirects, const char *_redir_order, int _n_redir_args) {
+void redirect_setup(char **_redirects, char **_redir_order, int _n_redir_args) {
     for (int j = 1; j < _n_redir_args; j++) {
         FILE *fp = NULL;
         trim(_redirects[j]);
-        if(_redir_order[j - 1] == '<') {
+        if (strcmp(_redir_order[j - 1], "<") == 0) {
             fp = file_handler(_redirects[j], "r");
             dup2(fileno(fp), STDIN_FILENO);
         } else {
-            fp = file_handler(_redirects[j], "w");
+            char *mode = "a";
+            if (strcmp(_redir_order[j - 1], ">") == 0) {
+                mode = "w";
+            }
+            fp = file_handler(_redirects[j], mode);
             dup2(fileno(fp), STDOUT_FILENO);
         }
         close(fileno(fp));

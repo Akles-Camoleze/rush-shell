@@ -25,6 +25,7 @@ int main() {
             pid_t p_ids[n_cmd];
             open_pipes(pipes, n_pipes);
 
+
             for (int i = 0; i < n_cmd; i++) {
                 p_ids[i] = fork();
                 if (p_ids[i] == 0) {
@@ -36,8 +37,8 @@ int main() {
                     close_pipes(pipes, n_pipes);
 
                     int n_redir_args;
-                    char *redir_order = get_redirects_order(commands[i]);
-                    char **redirects = split_command(commands[i], "<>", &n_redir_args);
+                    char **redir_order = get_redirects_order(commands[i]);
+                    char **redirects = split_command(commands[i], "<>>", &n_redir_args);
                     int n_spaces;
                     char **spaces = split_command(*redirects, " ", &n_spaces);
 

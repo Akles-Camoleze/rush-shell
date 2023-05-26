@@ -69,7 +69,7 @@ void replace_command(char *_dest, char *_src);
  * @param _command :Comando a ser obtido a ordem dos redirecionadores
  * @return char* com os redirecionadores contidos em _command em ordem
  */
-char *get_redirects_order(const char *_command);
+char **get_redirects_order(const char *_command);
 
 /**
  *  Remove os espaços contidos em _str
