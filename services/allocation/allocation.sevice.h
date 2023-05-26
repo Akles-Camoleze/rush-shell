@@ -14,12 +14,13 @@
 char *malloc_command_line();
 
 /**
- * Realoca de acordo com o tamanho de _command
+ * Realoca _command de acordo com o tamanho de _size
  * @param _command: Endereço do ponteiro para a string que sera realocada
+ * @param _size: Tamanho de memória a ser realocada
  * @return
  * Nova posicao de string realocada
  * */
-char *realloc_command_line(char *_command);
+char *realloc_command_line(char *_command, size_t _size);
 
 /**
  * Libera o ponteiro da memória e aponta-o para NULL

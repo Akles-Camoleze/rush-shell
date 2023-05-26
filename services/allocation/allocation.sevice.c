@@ -4,8 +4,8 @@ char *malloc_command_line() {
     return (char *) malloc(ARG_MAX * sizeof(char));
 }
 
-char *realloc_command_line(char *_command) {
-    return (char *) realloc(_command, (strlen(_command) + 1) * sizeof(char));
+char *realloc_command_line(char *_command, size_t _size) {
+    return (char *) realloc(_command, (_size + 1) * sizeof(char));
 }
 
 void clean(void **_ptr) {
