@@ -1,15 +1,11 @@
 TARGET=main
 LD=gcc
 BUILD_DIR = build
-OBJS=main.o exceptions.o allocation.service.o commandline.service.o engine.service.o file.service.o messages.view.o
-RUN=build/main.o build/exceptions.o build/allocation.service.o build/commandline.service.o build/engine.service.o build/file.service.o build/messages.view.o
+OBJS=main.o allocation.service.o commandline.service.o engine.service.o file.service.o messages.view.o
+RUN=build/main.o build/allocation.service.o build/commandline.service.o build/engine.service.o build/file.service.o build/messages.view.o
 
 all: $(OBJS)
 	@$(LD) $(RUN) -o $(TARGET) && clear; ./$(TARGET)
-
-exceptions.o: io-exceptions/exceptions.c
-	@if [ ! -d $(BUILD_DIR) ]; then mkdir $(BUILD_DIR); fi
-	@$(LD) -c io-exceptions/exceptions.c -o $(BUILD_DIR)/exceptions.o
 
 commandline.service.o: services/commandline/commandline.service.c
 	@if [ ! -d $(BUILD_DIR) ]; then mkdir $(BUILD_DIR); fi
