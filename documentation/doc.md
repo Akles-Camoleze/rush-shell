@@ -102,4 +102,8 @@ o interpretador de comandos:
 **Enter** para executá-los.
 * Para sair do interpretador, digite o comando *exit*.
 
+### Desenvolvedores
 
+- Akles Pires Camoleze
+- João Felipe Lamounier
+- Ricardo Alves Nascimento
