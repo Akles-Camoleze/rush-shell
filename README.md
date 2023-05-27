@@ -104,6 +104,8 @@ o interpretador de comandos:
 
 # Configuração Inicial do Git
 
+### Configurações Iniciais
+
 - Clonar o repositório:
 ```bash
 git clone https://github.com/Akles-Camoleze/rush-shell.git
