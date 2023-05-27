@@ -1,4 +1,4 @@
-#include "allocation.sevice.h"
+#include "allocation.service.h"
 
 char *malloc_command_line() {
     return (char *) malloc(ARG_MAX * sizeof(char));

@@ -1,5 +1,5 @@
-#ifndef RUSH_SHELL_ALLOCATION_SEVICE_H
-#define RUSH_SHELL_ALLOCATION_SEVICE_H
+#ifndef RUSH_SHELL_ALLOCATION_SERVICE_H
+#define RUSH_SHELL_ALLOCATION_SERVICE_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,4 +28,4 @@ char *realloc_command_line(char *_command, size_t _size);
  * */
 void clean(void **_ptr);
 
-#endif //RUSH_SHELL_ALLOCATION_SEVICE_H
+#endif //RUSH_SHELL_ALLOCATION_SERVICE_H
