@@ -1,7 +1,7 @@
 #ifndef RUSH_SHELL_COMMANDLINE_SERVICE_H
 #define RUSH_SHELL_COMMANDLINE_SERVICE_H
 
-#include "../allocation/allocation.sevice.h"
+#include "../allocation/allocation.service.h"
 #include "../../views/messages/messages.view.h"
 #include <stdbool.h>
 #include <ctype.h>
