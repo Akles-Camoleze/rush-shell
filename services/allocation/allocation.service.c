@@ -12,3 +12,9 @@ void clean(void **_ptr) {
     free(*_ptr);
     *_ptr = NULL;
 }
+
+void n_clean(void **_ptr, int _n) {
+    for (int i = 0; i < _n; i++) {
+        clean((void **) &(_ptr[i]));
+    }
+}

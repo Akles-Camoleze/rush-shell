@@ -28,4 +28,11 @@ char *realloc_command_line(char *_command, size_t _size);
  * */
 void clean(void **_ptr);
 
+/**
+ * Libera _n ponteiros da memória e aponta-os para NULL
+ * @param _ptr: Ponteiros a serem manipulados
+ * @param _n: Quantidade de ponteiros
+ * */
+void n_clean(void **_ptr, int _n);
+
 #endif //RUSH_SHELL_ALLOCATION_SERVICE_H
