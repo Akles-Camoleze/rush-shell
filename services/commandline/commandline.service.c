@@ -50,7 +50,7 @@ int get_args_quantity(char *_command, char *_token) {
 char **split_command(char *_command, char *_token, int *_n_args) {
     int i = 0;
     *_n_args = get_args_quantity(_command, _token);
-    char *arg = strtok(strdup(_command), _token);
+    char *arg = strtok(_command, _token);
     char **args = (char **) malloc((*_n_args + 1) * sizeof(char *));
     args[*_n_args] = NULL;
     while (arg != NULL) {

@@ -42,4 +42,11 @@ void pipe_setup(int *_curr_pipe, int *_prev_pipe, const char *_next_cmd);
  */
 void redirect_setup(char **_redirects, char **_redir_order, int _n_redir_args);
 
+/**
+ *  Realiza a execução do comando
+ * @param _commands :Comandos a serem executados
+ * @param _n_cmd :Quantidade de comandos
+ */
+void exec_command(char **_commands, int _n_cmd);
+
 #endif //RUSH_SHELL_ENGINE_SERVICE_H
