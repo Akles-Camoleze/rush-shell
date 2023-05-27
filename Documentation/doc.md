@@ -1,11 +1,19 @@
 # Documentação do Projeto
 ### Descrição 
 Este projeto consiste no desenvolvimento de um
-interpretados de comandos em linguagem C. O
+interpretador de comandos em linguagem C. O
 interpretador será capaz de receber comandos
 do usuário, executá-los e exibir os resultados
 correspondentes. Utilizando a biblioteca C da 
 GNU(libc6-dev) para invocar recursos POSIX.
+
+### Métodos Adotados
+#### Pipes:
+Optamos pela criação de pipes infinitos, são criados de acordo
+com a quantidade de comandos (número de comandos - 1).
+Como consequência, temos uma maior flexibilidade e escalabilidade. 
+Contudo, possui uma maior latência e complexidade 
+no gerenciamento de recursos.
 
 ### Funcionamento
 #### Execução interativa: 
@@ -13,8 +21,7 @@ GNU(libc6-dev) para invocar recursos POSIX.
 iniciado sem argumentos de linha de comando.
 * Será exibido um prompt para o usuário,
 indicando que ele pode digitar os comandos.
-    * `rush@shell:~$`
-* O interpretador lerá os coamandos digitados
+* Serão interpretados os comandos digitados
 pelo usuário na entrada padrão (stdin).
 * um novo prompt só será exibido após a 
 conclusão do comando anterior.
@@ -24,21 +31,24 @@ conclusão do comando anterior.
 mais comandos a serem executados.
 * Se houver mais de comando na linha
 eles deverão ser encadeados por pipes ("|"),
-permitindo que a saída de um coamando seja a 
+permitindo que a saída de um comando seja a 
 entrada para outro comando.
 
 ### Fucionalidades Implementadas
 * **Execução de comandos simples:**
 O interpretador é capaz de executar comandos
 simples, como programas internos do sistema
-(ex:'ls').
+(ex: ls).
 * **Manipulação de Redirecionamento de E/S:**
 O interpretador suporta o redirecionamento
 de entrada e saída para arquivos, permitindo
 que o usuário especifique o arquivo de entrada
-ou saída para um comando.
+ou saída para um comando. Redirecionadores implementados:
+  *  `<`: Utilizado para leitura de arquivo
+  *  `>`: Utilizado para gravar em um arquivo
+  *  `>>`: Utilizado para adicionar em um arquivo
 * **Encadeamento de Comandos:** É possível encadear múltiplos comandos através
-do uso do operador pipe ('|'), permitindo que
+do uso do operador pipe ("|"), permitindo que
 a saída seja redirecionada como entrada de 
 outro comando.
 ### Requisitos do Sistema
@@ -48,20 +58,21 @@ requisitos:
 * Sistema Operacional Unix/Linux.
 * Compilador C compatível com a biblioteca GNU
 libc6-dev.
+* Make para automatizar compilação/execução do programa
 * Acesso aos recursos POSIX.
 ### Estrutura do Código-Fonte
 O código-fonte do interpretador está organizado
 da seguinte maneira:
 * **main.c:** Contém a função principal do 
-programa, responsável por ler os comandos do 
+programa, responsável por receber os comandos do 
 usuário e iniciar a execução
 * **views**
   * **messages**
     * **messages.view.c:** Contém a funcão que
-    realiza a saída de mensagens, permitindo
-    que o usuário visualize resultados dos programas.  
-    `rush@shell:~$ ll`  
-     `ll: No such file or directory`
+    realiza a saída de mensagens:  
+      `ll: No such file or directory` (em caso de erro)
+    
+      `rush@shell:~$` (saída padrão)
 * **services**
   * **allocation**
     * **allocation.service.c:** Contém todas
@@ -71,24 +82,22 @@ usuário e iniciar a execução
     * **commandline.service.c:** Contém as
     funções que vão manipular as linhas de
     comando como validação de comando, 
-    verificação de *exit* no início da linha e
+    verificação de *exit* e
     divisão da linha em múltiplos comandos
       (caso necessário).
     * **engine**
-      * **engin.service.c**
-      ---- Ainda a fazer----
-* **io-exceptions**
-  * **exceptions.c:** Responsável por salva
-  as excessões de entrada e saída em um arquivo
-  .log
+      * **engine.service.c**
+      Serviço motor do shell. Realiza a execução dos comandos, 
+      configuração dos pipes, redirecionadores.
+    * **file**
+      * **file.service.c**
+      Responsável pela abertura e fechamento de arquivos.
   
 ### Compilação e Execução 
 Siga as instruções abaixo para compilar e executar
 o interpretador de comandos:
 * Abra um terminal no diretório raiz do projeto.
-* Execute o comando *make* para compilar o programa.
-* Após a compilação, execute o comando 
-./main para iniciar o interpretador.
+* Execute o comando *make* para compilar e executar o programa.
 * Digite os comandos desejados e pressione 
 **Enter** para executá-los.
 * Para sair do interpretador, digite o comando *exit*.
