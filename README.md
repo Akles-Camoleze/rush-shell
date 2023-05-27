@@ -8,7 +8,7 @@ correspondentes. Utilizando a biblioteca C da
 GNU(libc6-dev) para invocar recursos POSIX.
 
 ### Métodos Adotados
-#### Pipes:
+#### Pipes
 Optamos pela criação de pipes infinitos, são criados de acordo
 com a quantidade de comandos (número de comandos - 1).
 Como consequência, temos uma maior flexibilidade e escalabilidade.
@@ -16,7 +16,7 @@ Contudo, possui uma maior latência e complexidade
 no gerenciamento de recursos.
 
 ### Funcionamento
-#### Execução interativa:
+#### Execução interativa
 * O programa será
   iniciado sem argumentos de linha de comando.
 * Será exibido um prompt para o usuário,
