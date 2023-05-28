@@ -1,5 +1,7 @@
 # Documentação do Projeto
+
 ### Descrição
+
 Este projeto consiste no desenvolvimento de um
 interpretador de comandos em linguagem C. O
 interpretador será capaz de receber comandos
@@ -8,7 +10,9 @@ correspondentes. Utilizando a biblioteca C da
 GNU(libc6-dev) para invocar recursos POSIX.
 
 ### Métodos Adotados
-#### Pipes
+
+#### Pipes:
+
 Optamos pela criação de pipes infinitos, são criados de acordo
 com a quantidade de comandos (número de comandos - 1).
 Como consequência, temos uma maior flexibilidade e escalabilidade.
@@ -16,7 +20,9 @@ Contudo, possui uma maior latência e complexidade
 no gerenciamento de recursos.
 
 ### Funcionamento
-#### Execução interativa
+
+#### Execução interativa:
+
 * O programa será
   iniciado sem argumentos de linha de comando.
 * Será exibido um prompt para o usuário,
@@ -27,6 +33,7 @@ no gerenciamento de recursos.
   conclusão do comando anterior.
 
 #### Execução de Comandos
+
 * Cada linha digitada poderá conter um ou
   mais comandos a serem executados.
 * Se houver mais de comando na linha
@@ -35,6 +42,7 @@ no gerenciamento de recursos.
   entrada para outro comando.
 
 ### Fucionalidades Implementadas
+
 * **Execução de comandos simples:**
   O interpretador é capaz de executar comandos
   simples, como programas internos do sistema
@@ -44,25 +52,31 @@ no gerenciamento de recursos.
   de entrada e saída para arquivos, permitindo
   que o usuário especifique o arquivo de entrada
   ou saída para um comando. Redirecionadores implementados:
-    *  `<`: Utilizado para leitura de arquivo
-    *  `>`: Utilizado para gravar em um arquivo
-    *  `>>`: Utilizado para adicionar em um arquivo
+    * `<`: Utilizado para leitura de arquivo
+    * `>`: Utilizado para gravar em um arquivo
+    * `>>`: Utilizado para adicionar em um arquivo
 * **Encadeamento de Comandos:** É possível encadear múltiplos comandos através
   do uso do operador pipe ("|"), permitindo que
   a saída seja redirecionada como entrada de
   outro comando.
+
 ### Requisitos do Sistema
+
 Para compilar e executar o interpretador de
 comandos, o sistema deve atender aos seguintes
 requisitos:
+
 * Sistema Operacional Unix/Linux.
 * Compilador C compatível com a biblioteca GNU
   libc6-dev.
 * Make para automatizar compilação/execução do programa
 * Acesso aos recursos POSIX.
+
 ### Estrutura do Código-Fonte
+
 O código-fonte do interpretador está organizado
 da seguinte maneira:
+
 * **main.c:** Contém a função principal do
   programa, responsável por receber os comandos do
   usuário e iniciar a execução
@@ -94,8 +108,10 @@ da seguinte maneira:
               Responsável pela abertura e fechamento de arquivos.
 
 # Compilação e Execução
+
 Siga as instruções abaixo para compilar e executar
 o interpretador de comandos:
+
 * Abra um terminal no diretório raiz do projeto.
 * Execute o comando *make* para compilar e executar o programa.
 * Digite os comandos desejados e pressione
@@ -104,13 +120,21 @@ o interpretador de comandos:
 
 # Configuração Inicial do Git
 
-### Configurações Iniciais
+#### Clonar o repositório
 
-- Clonar o repositório:
 ```bash
 git clone https://github.com/Akles-Camoleze/rush-shell.git
 ```
+
+<details>
+<summary>
+  
+ #### Para colaboradores
+  
+</summary>
+
 - Configurar seu usuário:
+
 ```bash
 git config --global user.name <seu_nome_no_git>
 git config --global user.email <seu_email_no_git>
@@ -129,6 +153,8 @@ Para isso, deve-se seguir os passos:
 - Marque todas a opções e confirme.
 - Após criado, salve-o em um arquivo, pois não será permitida a sua visualização novamente.
 - Agora, ao realizar o push, basta inserir seu `user_name` e o `token` gerado no campo de `password`
+
+</details>
 
 # Desenvolvedores
 
