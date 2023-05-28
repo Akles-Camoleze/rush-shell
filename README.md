@@ -120,7 +120,7 @@ o interpretador de comandos:
 
 # Configuração Inicial do Git
 
-#### Clonar o repositório
+### Clonar o repositório
 
 ```bash
 git clone https://github.com/Akles-Camoleze/rush-shell.git
@@ -129,18 +129,18 @@ git clone https://github.com/Akles-Camoleze/rush-shell.git
 <details>
 <summary>
   
- #### Para colaboradores
+ ### Para colaboradores
   
 </summary>
 
-- Configurar seu usuário:
+#### Configurar seu usuário
 
 ```bash
 git config --global user.name <seu_nome_no_git>
 git config --global user.email <seu_email_no_git>
 ```
 
-### Realizar Push
+#### Realizar Push
 
 Será necessário criar um token para logar no sua conta pelo terminal (ou IDE).
 
